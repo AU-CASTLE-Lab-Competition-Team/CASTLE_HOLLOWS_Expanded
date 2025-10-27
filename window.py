@@ -38,21 +38,23 @@ class MyGameWindow(arcade.Window):
         # logic for spawning in waves
         self.enemy_list = None
         self.spawn_timer = 0.0
-        self.spawn_delay = 3.0
+        self.first_spawn_delay = 10.0
+        self.spawn_delay = 5.0
         self.enemies_to_spawn = 0
 
         # new wave system
         self.wave_list = [
             {"enemy_type": "skeleton", "spawn_interval": 3.0, "count": 3},
-            {"enemy_type": "zombie",   "spawn_interval": 3.3, "count": 5},
-            {"enemy_type": "skeleton", "spawn_interval": 1.5, "count": 10},
+            {"enemy_type": "zombie",   "spawn_interval": 3.5, "count": 5},
+            {"enemy_type": "skeleton", "spawn_interval": 2.0, "count": 10},
             {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 6},
             {"enemy_type": "zombie",  "spawn_interval": 1.0, "count": 14},
             {"enemy_type": "skeleton",  "spawn_interval": 1.5, "count": 20},
             {"enemy_type": "vampire",  "spawn_interval": 2.0, "count": 10},
-            {"enemy_type": "vampire",  "spawn_interval": 2.0, "count": 20},
+            {"enemy_type": "vampire",  "spawn_interval": 1.5, "count": 20},
             {"enemy_type": "skeleton",  "spawn_interval": 1.0, "count": 50},
-            {"enemy_type": "zombie",  "spawn_interval": .5, "count": 100},
+            {"enemy_type": "zombie",  "spawn_interval": .5, "count": 125},
+            {"enemy_type": "zombie",  "spawn_interval": .4, "count": 200},
 
         ]         
         self.current_wave_index = -1
@@ -230,15 +232,20 @@ class MyGameWindow(arcade.Window):
         # If we're not currently in a wave, try to start the next wave after wave_delay
         if self.current_wave_index == -1:
             # add a delay for the first wave?
-            self.current_wave_index = 0
-            wave = self.wave_list[self.current_wave_index]
-            self.enemies_to_spawn = wave["count"]
-            self.spawn_delay = wave["spawn_interval"]
-            self.current_wave_enemy_type = wave["enemy_type"]
-            self.wave_timer = 0.0
-            print(f"Starting Wave 1: {wave}")
-            self.show_wave_text = True
-            self.wave_text_timer = 3.0 
+            self.show_prepare_wave_text = True
+            self.spawn_timer+= delta_time
+            if self.spawn_timer >= self.first_spawn_delay:
+                self.show_prepare_wave_text = False
+                self.current_wave_index = 0
+                wave = self.wave_list[self.current_wave_index]
+                self.enemies_to_spawn = wave["count"]
+                self.spawn_delay = wave["spawn_interval"]
+                self.current_wave_enemy_type = wave["enemy_type"]
+                self.wave_timer = 0.0
+                print(f"Starting Wave 1: {wave}")
+                self.show_wave_text = True
+                self.wave_text_timer = 3.0 
+                self.spawn_timer = 0.0
             return
 
         # Handle spawn timing if there are still enemies to spawn in the current wave
@@ -284,17 +291,19 @@ class MyGameWindow(arcade.Window):
 
         self.ground_list.draw()
         self.gate_list.draw()
-        self.path_list.draw()
         self.patch_list.draw()
-        self.selected_patch.draw()
-        self.enemy_list.draw()
         self.shop_list.draw()
-        self.selected_shopitem.draw()
+        if self.mode == "Shop":
+            self.selected_shopitem.draw()
+        elif self.mode == "Patches":
+            self.selected_patch.draw()
+        self.path_list.draw()
+        self.enemy_list.draw()
         self.gate_layer.draw()
         self.health_bar.draw()
         self.pumpkin_list.draw()
         self.shop_pumpkins_layer.draw()
-
+        
         arcade.draw_text(f'Wave: {self.current_wave_index + 1}', 1810, 970, arcade.color.WHITE, 20,bold=True)        
         arcade.draw_text(f'Money: ${self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Score: {self.score}', 1810, 890, arcade.color.WHITE, 20,bold=True)
@@ -310,7 +319,8 @@ class MyGameWindow(arcade.Window):
         arcade.draw_text(f'Space: Place vegetable', 10, 90, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Space: Upgrade vegetable (if on a full vegetable patch)', 10, 60, arcade.color.WHITE, 20,bold=True)
         
-
+        if self.show_prepare_wave_text:
+            arcade.draw_text(f'Enemies Coming Soon, Prepare...', 550, 900, arcade.color.RED, 40, bold=True)
 
         if self.show_wave_text:
             arcade.draw_text(f'Wave {self.current_wave_index + 1}', 900, 530, arcade.color.RED, 40, bold=True)
@@ -346,7 +356,7 @@ class MyGameWindow(arcade.Window):
 
         for pumpkin in self.spawned_pumpkins:
             if pumpkin.is_shooting:
-                print('shooting')
+                #print('shooting')
                 pumpkin.current_frame += 1
                 if pumpkin.current_frame < len(pumpkin.animation):
                     pumpkin.texture = pumpkin.animation[pumpkin.current_frame]
@@ -355,19 +365,18 @@ class MyGameWindow(arcade.Window):
                     pumpkin.texture = pumpkin.idle_texture
             if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
                 self.play_pew()
-                seed = Seed("assets/images/pumpseed.png",scale=2.5,pumpkin=pumpkin)
                 pumpkin.fire_animation()
+                seed = Seed("assets/images/pumpseed.png",scale=2.5,pumpkin=pumpkin)
                 pumpkin.cooldown = 0
                 self.seed_list.append(seed)
             else:
                 pumpkin.target(self.enemy_list)
-            if pumpkin.targeted_enemy:
-                if pumpkin.targeted_enemy.health <=0:
-                    print('money update')
-                    pumpkin.targeted_enemy.remove_from_sprite_lists()
-                    self.money +=1
-                    self.score +=1
-                    pumpkin.targeted_enemy = None
+            if pumpkin.targeted_enemy and pumpkin.targeted_enemy.health <=0:
+                print('money update')
+                pumpkin.targeted_enemy.remove_from_sprite_lists()
+                self.money +=1
+                self.score +=1
+                pumpkin.targeted_enemy = None
             if pumpkin.cooldown != pumpkin.fire_rate:
                 pumpkin.cooldown += 1
                 #print(pumpkin.cooldown)
