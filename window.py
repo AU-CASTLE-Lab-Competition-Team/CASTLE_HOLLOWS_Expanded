@@ -47,12 +47,12 @@ class MyGameWindow(arcade.Window):
             {"enemy_type": "zombie",   "spawn_interval": 3.3, "count": 5},
             {"enemy_type": "skeleton", "spawn_interval": 1.5, "count": 10},
             {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 6},
-            {"enemy_type": "zombie",  "spawn_interval": 2.0, "count": 14},
+            {"enemy_type": "zombie",  "spawn_interval": 1.0, "count": 14},
             {"enemy_type": "skeleton",  "spawn_interval": 1.5, "count": 20},
-            {"enemy_type": "vampire",  "spawn_interval": 3.0, "count": 10},
-            {"enemy_type": "vampire",  "spawn_interval": 3.0, "count": 20},
-            {"enemy_type": "skeleton",  "spawn_interval": 2.0, "count": 50},
-            {"enemy_type": "zombie",  "spawn_interval": 2.0, "count": 100},
+            {"enemy_type": "vampire",  "spawn_interval": 2.0, "count": 10},
+            {"enemy_type": "vampire",  "spawn_interval": 2.0, "count": 20},
+            {"enemy_type": "skeleton",  "spawn_interval": 1.0, "count": 50},
+            {"enemy_type": "zombie",  "spawn_interval": .5, "count": 100},
 
         ]         
         self.current_wave_index = -1

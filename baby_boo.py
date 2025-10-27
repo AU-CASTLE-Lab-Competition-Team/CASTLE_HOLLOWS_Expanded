@@ -25,7 +25,7 @@ class Baby_Boo(arcade.Sprite):
         self.range = range
         self.damage = damage
         self.seed_speed = seed_speed
-        self.upgrade_level = 1
+        self.upgrade_level = 0
         self.targeted_enemy= None
         self.seed = False
         self.cooldown = fire_rate
