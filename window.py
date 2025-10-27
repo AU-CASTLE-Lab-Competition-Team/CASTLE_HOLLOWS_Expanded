@@ -10,6 +10,7 @@ from constants import SPRITE_SCALING_ENEMY, SPRITE_SCALING_ZOMBIE, SPRITE_SCALIN
 
 from pumpkin import Pumpkin
 from gourd import Gourd
+from baby_boo import Baby_Boo
 from seed import Seed
 from gate import Gate
 
@@ -471,10 +472,12 @@ class MyGameWindow(arcade.Window):
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
                     if self.money >= PUMPKINS[self.selected_pumpkin][0]:
-                        if self.selected_pumpkin == 'classic':
+                        if self.selected_pumpkin == 'Classic':
                             pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                        elif self.selected_pumpkin == 'gourd':
+                        elif self.selected_pumpkin == 'Gourd':
                             pumpkin = Gourd("assets/images/gourd.png",1,sel_patch_xy[0],sel_patch_xy[1])
+                        elif self.selected_pumpkin == 'Baby Boo':
+                            pumpkin = Baby_Boo("assets/images/baby_boo.png",1,sel_patch_xy[0],sel_patch_xy[1])
                         self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
                         self.pumpkin_list.append(pumpkin)
                         self.spawned_pumpkins.append(pumpkin)
