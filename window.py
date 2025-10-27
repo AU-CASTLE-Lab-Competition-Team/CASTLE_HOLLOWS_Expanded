@@ -13,15 +13,8 @@ from gourd import Gourd
 from seed import Seed
 from gate import Gate
 
-from constants import SEED_DAMAGE
-from constants import SEED_SPEED
-from constants import PUMP_RANGE
-from constants import FIRE_RATE
-from constants import G_SEED_DAMAGE
-from constants import G_SEED_SPEED
-from constants import G_PUMP_RANGE
-from constants import G_FIRE_RATE
 from constants import PUMPKINS
+from constants import PUMPKIN_NAMES
 
 
 class MyGameWindow(arcade.Window):
@@ -98,10 +91,6 @@ class MyGameWindow(arcade.Window):
         self.score = 0
         self.game_over = False
         
-        self.classic_cost = 5
-        self.gourd_cost = 8
-        self.upgrade_cost = 3
-        
         self.shop_pumpkins_layer = None
         
         #self.setup()
@@ -163,13 +152,13 @@ class MyGameWindow(arcade.Window):
         self.selected_shopitems = {}
         id = 0
         for shop_tile in self.selected_shopitem_list:
-            self.selected_shopitems['shopitem'+str(id)] = [shop_tile,PUMPKINS[id]]
+            self.selected_shopitems['shopitem'+str(id)] = [shop_tile,PUMPKIN_NAMES[id]]
             print(shop_tile)
             id += 1
         
         self.selected_shopitem = arcade.SpriteList()
         self.curr_shopitem_num = 0
-        self.selected_pumpkin = PUMPKINS[0]
+        self.selected_pumpkin = PUMPKIN_NAMES[0]
         self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
         print(self.curr_shopitem_num)
 
@@ -308,15 +297,11 @@ class MyGameWindow(arcade.Window):
         arcade.draw_text(f'Wave: {self.current_wave_index + 1}', 1810, 970, arcade.color.WHITE, 20,bold=True)        
         arcade.draw_text(f'Money: ${self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Score: {self.score}', 1810, 890, arcade.color.WHITE, 20,bold=True)
+
         arcade.draw_text(f'Selecting: {self.selected_pumpkin}', 1810, 150, arcade.color.WHITE, 16,bold=True)
-        if self.selected_pumpkin == 'gourd':
-            arcade.draw_text(f'Price: ${self.gourd_cost}', 1810, 100, arcade.color.WHITE, 20,bold=True)
-            arcade.draw_text(f'Upgrade: ${self.upgrade_cost}', 1810, 75, arcade.color.WHITE, 20,bold=True)
-            arcade.draw_text(f'Damage: {G_SEED_DAMAGE}', 1810, 50, arcade.color.WHITE, 20,bold=True)
-        elif self.selected_pumpkin == 'classic':
-            arcade.draw_text(f'Price: ${self.classic_cost}', 1810, 100, arcade.color.WHITE, 20,bold=True)
-            arcade.draw_text(f'Upgrade: ${self.upgrade_cost}', 1810, 75, arcade.color.WHITE, 20,bold=True)
-            arcade.draw_text(f'Damage: {SEED_DAMAGE}', 1810, 50, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Price: ${PUMPKINS[self.selected_pumpkin][0]}', 1810, 100, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Upgrade: ${PUMPKINS[self.selected_pumpkin][1]}', 1810, 75, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Damage: {PUMPKINS[self.selected_pumpkin][2]}', 1810, 50, arcade.color.WHITE, 20,bold=True)
         
         arcade.draw_text(f'Esc: Exit', 10, 30, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'L/R Arrow Keys: Switch through patches', 10, 150, arcade.color.WHITE, 20,bold=True)
@@ -485,39 +470,30 @@ class MyGameWindow(arcade.Window):
                 if self.patch_full['patch'+str(self.curr_patch_num)] == 0:
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
-                    if self.selected_pumpkin == 'classic':
-                        if self.money >= self.classic_cost:
+                    if self.money >= PUMPKINS[self.selected_pumpkin][0]:
+                        if self.selected_pumpkin == 'classic':
                             pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                            self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
-                            self.pumpkin_list.append(pumpkin)
-                            self.spawned_pumpkins.append(pumpkin)
-                            self.money -= self.classic_cost
-                            #save pumpkin to delete later if a new pumpkin is bought on top of it
-                            self.patch_full['patch'+str(self.curr_patch_num)] = 1
-                        else:
-                            print('You do not have enough money')
-                    if self.selected_pumpkin == 'gourd':
-                        if self.money >= self.gourd_cost:
+                        elif self.selected_pumpkin == 'gourd':
                             pumpkin = Gourd("assets/images/gourd.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                            self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
-                            self.pumpkin_list.append(pumpkin)
-                            self.spawned_pumpkins.append(pumpkin)
-                            self.money -= self.gourd_cost
-                            #save pumpkin to delete later if a new pumpkin is bought on top of it
-                            self.patch_full['patch'+str(self.curr_patch_num)] = 1
-                        else:
-                            print('You do not have enough money')
-                    
+                        self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
+                        self.pumpkin_list.append(pumpkin)
+                        self.spawned_pumpkins.append(pumpkin)
+                        self.money -= PUMPKINS[self.selected_pumpkin][0]
+                        #save pumpkin to delete later if a new pumpkin is bought on top of it
+                        self.patch_full['patch'+str(self.curr_patch_num)] = 1
+                    else:
+                        print('You do not have enough money')
+
                 elif self.patch_full['patch'+str(self.curr_patch_num)] == 1:
                     print("Patch is full")
                     #Check to see if the pumpkin attempted to place is different than pumpkin there currently
                     #If True do what would happen if patch is 'empty' but delete pumpkin currently there
-                    if self.money >= self.upgrade_cost:
+                    if self.money >= PUMPKINS[self.selected_pumpkin][1]:
                         pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)]
                         upgrade = pumpkin.upgrade()
                         if upgrade:
                             print('upgrading pumpkin')
-                            self.money -= self.upgrade_cost
+                            self.money -= PUMPKINS[self.selected_pumpkin][1]
                 
 def main():
     
