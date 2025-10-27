@@ -20,7 +20,8 @@ SCREEN_TITLE = "CASTLE HALLOWS"
 # Colors, asset paths
 BACKGROUND_COLOR = (169, 189, 224)  # arcade.color.GRAY_BLUE equivalent
 
-
+#List of Pumpkin names to use for the shop
+PUMPKINS = ['classic','gourd']
 
 # Seed/pumpkin stats
 SEED_DAMAGE = 35
@@ -29,7 +30,7 @@ PUMP_RANGE = 200
 FIRE_RATE = 100
 
 #Gourd Stats
-G_SEED_DAMAGE = 100
+G_SEED_DAMAGE = 75
 G_SEED_SPEED = 600
 G_PUMP_RANGE = 700
 G_FIRE_RATE = 150

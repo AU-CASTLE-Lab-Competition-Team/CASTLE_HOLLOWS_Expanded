@@ -25,7 +25,7 @@ class Pumpkin(arcade.Sprite):
         self.range = range
         self.damage = damage
         self.seed_speed = seed_speed
-        self.upgrade_level = 1
+        self.upgrade_level = 0
         self.targeted_enemy= None
         self.seed = False
         self.cooldown = fire_rate
@@ -68,11 +68,12 @@ class Pumpkin(arcade.Sprite):
             self.targeted_enemy = None
     
     def upgrade(self):
-        #self.upgrade_level +=1
+        self.upgrade_level +=1
         print('attempting upgrade')
 
-        if self.upgrade_level == 1:
+        if self.upgrade_level <= 3:
             self.range += 10
             self.damage += 10
             self.fire_rate -= 10
             print('upgrade successful')
+            return True

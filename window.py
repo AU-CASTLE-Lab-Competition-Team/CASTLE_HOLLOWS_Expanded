@@ -21,6 +21,7 @@ from constants import G_SEED_DAMAGE
 from constants import G_SEED_SPEED
 from constants import G_PUMP_RANGE
 from constants import G_FIRE_RATE
+from constants import PUMPKINS
 
 
 class MyGameWindow(arcade.Window):
@@ -92,7 +93,6 @@ class MyGameWindow(arcade.Window):
         self.seed_list = None
         self.pumpkin_list = None
         self.selected_pumpkin = None
-        self.upgrade = None
         self.patch_to_pumpkin = None
         self.money = 10
         self.score = 0
@@ -140,7 +140,6 @@ class MyGameWindow(arcade.Window):
 
         self.seed_list = arcade.SpriteList()
         self.health_bar_layer = self.map.sprite_lists["health_bar"]
-        self.upgrade = False
         self.patch_to_pumpkin = {}
         #Initializing Patches in dictionaries for easier access and control
         self.patch_full = {}
@@ -163,15 +162,14 @@ class MyGameWindow(arcade.Window):
         #Initializing Shop Items for easier control
         self.selected_shopitems = {}
         id = 0
-        pumpkin_names = ['classic','gourd']
         for shop_tile in self.selected_shopitem_list:
-            self.selected_shopitems['shopitem'+str(id)] = [shop_tile,pumpkin_names[id]]
+            self.selected_shopitems['shopitem'+str(id)] = [shop_tile,PUMPKINS[id]]
             print(shop_tile)
             id += 1
         
         self.selected_shopitem = arcade.SpriteList()
         self.curr_shopitem_num = 0
-        self.selected_pumpkin = 'classic'
+        self.selected_pumpkin = PUMPKINS[0]
         self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
         print(self.curr_shopitem_num)
 
@@ -493,11 +491,7 @@ class MyGameWindow(arcade.Window):
                             self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
                             self.pumpkin_list.append(pumpkin)
                             self.spawned_pumpkins.append(pumpkin)
-                            
-
-                            #Adjust Money
                             self.money -= self.classic_cost
-
                             #save pumpkin to delete later if a new pumpkin is bought on top of it
                             self.patch_full['patch'+str(self.curr_patch_num)] = 1
                         else:
@@ -508,11 +502,7 @@ class MyGameWindow(arcade.Window):
                             self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
                             self.pumpkin_list.append(pumpkin)
                             self.spawned_pumpkins.append(pumpkin)
-                            
-
-                            #Adjust Money
                             self.money -= self.gourd_cost
-
                             #save pumpkin to delete later if a new pumpkin is bought on top of it
                             self.patch_full['patch'+str(self.curr_patch_num)] = 1
                         else:
@@ -523,16 +513,12 @@ class MyGameWindow(arcade.Window):
                     #Check to see if the pumpkin attempted to place is different than pumpkin there currently
                     #If True do what would happen if patch is 'empty' but delete pumpkin currently there
                     if self.money >= self.upgrade_cost:
-                        if self.upgrade == False:
-                            self.money -= self.upgrade_cost
-                            pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)]
-                            print(pumpkin)
-                            pumpkin.upgrade()
+                        pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)]
+                        upgrade = pumpkin.upgrade()
+                        if upgrade:
                             print('upgrading pumpkin')
+                            self.money -= self.upgrade_cost
                 
-                
-
- 
 def main():
     
     window = MyGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
