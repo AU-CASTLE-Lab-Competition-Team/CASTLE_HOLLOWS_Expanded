@@ -41,6 +41,6 @@ B_FIRE_RATE = 50
 
 #List of Pumpkin names to use for the shop
 #Order of Dictionary: Name: [Purchase Cost, Upgrade Cost]
-PUMPKIN_NAMES = ['Classic','Gourd','Baby Boo']
-PUMPKINS = {'Classic':[5,3,SEED_DAMAGE,SEED_SPEED,PUMP_RANGE,FIRE_RATE],'Gourd':[8,5,G_SEED_DAMAGE,G_SEED_SPEED,G_PUMP_RANGE,G_FIRE_RATE],
+PUMPKIN_NAMES = ['Jack','Gourdon','Baby Boo']
+PUMPKINS = {'Jack':[5,3,SEED_DAMAGE,SEED_SPEED,PUMP_RANGE,FIRE_RATE],'Gourdon':[8,5,G_SEED_DAMAGE,G_SEED_SPEED,G_PUMP_RANGE,G_FIRE_RATE],
             'Baby Boo':[10,2,B_SEED_DAMAGE,B_SEED_SPEED,B_PUMP_RANGE,B_FIRE_RATE]}

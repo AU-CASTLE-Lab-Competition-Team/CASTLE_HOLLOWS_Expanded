@@ -481,9 +481,9 @@ class MyGameWindow(arcade.Window):
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
                     if self.money >= PUMPKINS[self.selected_pumpkin][0]:
-                        if self.selected_pumpkin == 'Classic':
+                        if self.selected_pumpkin == 'Jack':
                             pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                        elif self.selected_pumpkin == 'Gourd':
+                        elif self.selected_pumpkin == 'Gourdon':
                             pumpkin = Gourd("assets/images/gourd.png",1,sel_patch_xy[0],sel_patch_xy[1])
                         elif self.selected_pumpkin == 'Baby Boo':
                             pumpkin = Baby_Boo("assets/images/baby_boo.png",1,sel_patch_xy[0],sel_patch_xy[1])
