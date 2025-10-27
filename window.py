@@ -55,6 +55,8 @@ class MyGameWindow(arcade.Window):
             {"enemy_type": "skeleton",  "spawn_interval": 1.0, "count": 50},
             {"enemy_type": "zombie",  "spawn_interval": .5, "count": 125},
             {"enemy_type": "zombie",  "spawn_interval": .4, "count": 200},
+            {"enemy_type": "vampire",  "spawn_interval": 1.0, "count": 75},
+            {"enemy_type": "skeleton",  "spawn_interval": .5, "count": 300},
 
         ]         
         self.current_wave_index = -1
