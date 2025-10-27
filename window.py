@@ -7,16 +7,13 @@ from enemy import Enemy
 from zombie import Zombie
 from vampire import Vampire
 from constants import SPRITE_SCALING_ENEMY, SPRITE_SCALING_ZOMBIE, SPRITE_SCALING_VAMPIRE, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
+from constants import PUMPKINS, PUMPKIN_NAMES
 
 from pumpkin import Pumpkin
 from gourd import Gourd
 from baby_boo import Baby_Boo
 from seed import Seed
 from gate import Gate
-
-from constants import PUMPKINS
-from constants import PUMPKIN_NAMES
-
 
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
@@ -56,7 +53,9 @@ class MyGameWindow(arcade.Window):
             {"enemy_type": "zombie",  "spawn_interval": .5, "count": 125},
             {"enemy_type": "zombie",  "spawn_interval": .4, "count": 200},
             {"enemy_type": "vampire",  "spawn_interval": 1.0, "count": 75},
-            {"enemy_type": "skeleton",  "spawn_interval": .5, "count": 300},
+            {"enemy_type": "skeleton",  "spawn_interval": .25, "count": 200},
+            {"enemy_type": "vampire",  "spawn_interval": .5, "count": 100},
+            {"enemy_type": "zombie",  "spawn_interval": .15, "count": 300},
 
         ]         
         self.current_wave_index = -1
@@ -352,9 +351,15 @@ class MyGameWindow(arcade.Window):
 
         for enemy in self.enemy_list:
             if arcade.check_for_collision(enemy,self.gate_door):
-                self.gate.collision(1)
+                if self.gate.get_health() > 0:
+                    self.gate.collision(1)
+                    self.health_bar.pop()
                 enemy.health -= 100
-                self.health_bar.pop()
+            if enemy.health <= 0:
+                enemy.remove_from_sprite_lists()
+                if self.game_over != True:
+                    self.money +=1
+                    self.score +=1
 
         for pumpkin in self.spawned_pumpkins:
             if pumpkin.is_shooting:
@@ -365,6 +370,10 @@ class MyGameWindow(arcade.Window):
                 else:
                     pumpkin.is_shooting = False
                     pumpkin.texture = pumpkin.idle_texture
+
+            if pumpkin.targeted_enemy and pumpkin.targeted_enemy.health <=0:
+                pumpkin.targeted_enemy = None
+
             if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
                 self.play_pew()
                 pumpkin.fire_animation()
@@ -373,12 +382,7 @@ class MyGameWindow(arcade.Window):
                 self.seed_list.append(seed)
             else:
                 pumpkin.target(self.enemy_list)
-            if pumpkin.targeted_enemy and pumpkin.targeted_enemy.health <=0:
-                print('money update')
-                pumpkin.targeted_enemy.remove_from_sprite_lists()
-                self.money +=1
-                self.score +=1
-                pumpkin.targeted_enemy = None
+
             if pumpkin.cooldown != pumpkin.fire_rate:
                 pumpkin.cooldown += 1
                 #print(pumpkin.cooldown)
