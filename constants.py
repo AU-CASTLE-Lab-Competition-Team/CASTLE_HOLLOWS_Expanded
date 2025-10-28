@@ -36,7 +36,7 @@ G_FIRE_RATE = 275
 B_SEED_DAMAGE = 15
 B_SEED_SPEED = 500
 B_PUMP_RANGE = 150
-B_FIRE_RATE = 50
+B_FIRE_RATE = 55
 
 
 #List of Pumpkin names to use for the shop
