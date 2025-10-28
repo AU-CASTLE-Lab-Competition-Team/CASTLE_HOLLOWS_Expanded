@@ -493,7 +493,7 @@ class MyGameWindow(arcade.Window):
                             pumpkin = Gourd("assets/images/gourd.png",1,sel_patch_xy[0],sel_patch_xy[1])
                         elif self.selected_pumpkin == 'Baby Boo':
                             pumpkin = Baby_Boo("assets/images/baby_boo.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                        self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
+                        self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = [pumpkin,self.selected_pumpkin]
                         self.pumpkin_list.append(pumpkin)
                         self.spawned_pumpkins.append(pumpkin)
                         self.money -= PUMPKINS[self.selected_pumpkin][0]
@@ -506,12 +506,14 @@ class MyGameWindow(arcade.Window):
                     print("Patch is full")
                     #Check to see if the pumpkin attempted to place is different than pumpkin there currently
                     #If True do what would happen if patch is 'empty' but delete pumpkin currently there
-                    if self.money >= PUMPKINS[self.selected_pumpkin][1]:
-                        pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)]
+                    curr_pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)][1]
+                    print(curr_pumpkin)
+                    if self.money >= PUMPKINS[curr_pumpkin][1]:
+                        pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)][0]
                         upgrade = pumpkin.upgrade()
                         if upgrade:
                             print('upgrading pumpkin')
-                            self.money -= PUMPKINS[self.selected_pumpkin][1]
+                            self.money -= PUMPKINS[curr_pumpkin][1]
                 
 def main():
     
