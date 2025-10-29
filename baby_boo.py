@@ -71,7 +71,7 @@ class Baby_Boo(arcade.Sprite):
         
         print('attempting upgrade')
 
-        if self.upgrade_level <= 3:
+        if self.upgrade_level < 3:
             self.upgrade_level +=1
             self.range += 10
             self.damage += 10

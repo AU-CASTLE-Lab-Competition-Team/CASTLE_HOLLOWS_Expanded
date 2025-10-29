@@ -12,6 +12,7 @@ WAVES = [
             {"enemy_type": "vampire",  "spawn_interval": 2.0, "count": 10},
             {"enemy_type": "vampire",  "spawn_interval": 1.5, "count": 20},
             {"enemy_type": "skeleton",  "spawn_interval": 1.0, "count": 50},
+            {"enemy_type": "frank", "spawn_interval": 3.0, "count": 1},
             {"enemy_type": "zombie",  "spawn_interval": .5, "count": 125},
             {"enemy_type": "zombie",  "spawn_interval": .4, "count": 200},
             {"enemy_type": "vampire",  "spawn_interval": 1.0, "count": 75},
