@@ -68,10 +68,11 @@ class Gourd(arcade.Sprite):
             self.targeted_enemy = None
     
     def upgrade(self):
-        self.upgrade_level +=1
+        
         print('attempting upgrade')
 
-        if self.upgrade_level <= 3:
+        if self.upgrade_level < 3:
+            self.upgrade_level +=1
             self.range += 200
             self.damage += 20
             self.fire_rate -= 20
