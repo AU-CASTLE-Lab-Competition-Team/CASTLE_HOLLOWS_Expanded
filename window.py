@@ -6,6 +6,7 @@ import time
 from enemy import Enemy
 from zombie import Zombie
 from vampire import Vampire
+from Frankenstein import Frankenstein
 from constants import SPRITE_SCALING_ENEMY, SPRITE_SCALING_ZOMBIE, SPRITE_SCALING_VAMPIRE, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 from constants import PUMPKINS, PUMPKIN_NAMES
 
@@ -215,6 +216,9 @@ class MyGameWindow(arcade.Window):
         elif enemy_type == "vampire":
             image = "assets/images/vampire_enemy.png"
             enemy = Vampire(image, SPRITE_SCALING_VAMPIRE, self.position_list)
+        elif enemy_type == "frank":
+            image = "assets/images/frank.png"
+            enemy = Frankenstein(image,1,self.position_list)
 
         # else:
         #     image = "assets/images/skeleton_enemy.png"
