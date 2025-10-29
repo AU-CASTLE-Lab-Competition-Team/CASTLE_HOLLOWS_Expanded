@@ -62,9 +62,14 @@ B_SEED_SPEED = 500
 B_PUMP_RANGE = 150
 B_FIRE_RATE = 55
 
+#Coblets Stats
+C_SEED_DAMAGE = 1
+C_SEED_SPEED = 500
+C_PUMP_RANGE = 200
+C_FIRE_RATE = 200
 
 #List of Pumpkin names to use for the shop
 #Order of Dictionary: Name: [Purchase Cost, Upgrade Cost]
-PUMPKIN_NAMES = ['Jack','Gourdon','Baby Boo']
+PUMPKIN_NAMES = ['Jack','Gourdon','Baby Boo','Coblets']
 PUMPKINS = {'Jack':[5,3,SEED_DAMAGE,SEED_SPEED,PUMP_RANGE,FIRE_RATE],'Gourdon':[8,5,G_SEED_DAMAGE,G_SEED_SPEED,G_PUMP_RANGE,G_FIRE_RATE],
-            'Baby Boo':[10,2,B_SEED_DAMAGE,B_SEED_SPEED,B_PUMP_RANGE,B_FIRE_RATE]}
+            'Baby Boo':[10,2,B_SEED_DAMAGE,B_SEED_SPEED,B_PUMP_RANGE,B_FIRE_RATE],'Coblets':[1000000000000000000,2,C_SEED_DAMAGE,C_SEED_SPEED,C_PUMP_RANGE,C_FIRE_RATE]}

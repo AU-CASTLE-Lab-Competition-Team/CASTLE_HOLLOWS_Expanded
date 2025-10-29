@@ -12,6 +12,7 @@ from constants import PUMPKINS, PUMPKIN_NAMES, BASE_MONEY, WAVES
 
 from pumpkin import Pumpkin
 from gourd import Gourd
+from coblets import Coblets
 from baby_boo import Baby_Boo
 from seed import Seed
 from gate import Gate
@@ -113,6 +114,7 @@ class MyGameWindow(arcade.Window):
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
         self.gate_layer = self.map.sprite_lists["gate_door"]
         self.shop_pumpkins_layer = self.map.sprite_lists["shop_pumpkins"]
+        self.x_layer = self.map.sprite_lists["x"]
         self.pumpkin_list = arcade.SpriteList()
 
         self.seed_list = arcade.SpriteList()
@@ -291,6 +293,7 @@ class MyGameWindow(arcade.Window):
         self.health_bar.draw()
         self.pumpkin_list.draw()
         self.shop_pumpkins_layer.draw()
+        self.x_layer.draw()
         
         arcade.draw_text(f'Wave: {self.current_wave_index + 1}', 1810, 970, arcade.color.WHITE, 20,bold=True)        
         arcade.draw_text(f'Money: ${self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
@@ -487,6 +490,8 @@ class MyGameWindow(arcade.Window):
                             pumpkin = Gourd("assets/images/gourd.png",1,sel_patch_xy[0],sel_patch_xy[1])
                         elif self.selected_pumpkin == 'Baby Boo':
                             pumpkin = Baby_Boo("assets/images/baby_boo.png",1,sel_patch_xy[0],sel_patch_xy[1])
+                        elif self.selected_pumpkin == 'Coblets':
+                            pumpkin = Coblets("assets/images/coblets.png",1,sel_patch_xy[0],sel_patch_xy[1])
                         self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = [pumpkin,self.selected_pumpkin]
                         self.pumpkin_list.append(pumpkin)
                         self.spawned_pumpkins.append(pumpkin)
