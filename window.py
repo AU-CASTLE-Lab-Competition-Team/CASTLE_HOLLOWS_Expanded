@@ -350,8 +350,6 @@ class MyGameWindow(arcade.Window):
 
         for pumpkin in self.spawned_pumpkins:
 
-            arcade.draw_text('TESTSTSTSTSTSTSTSTSTST', pumpkin.center_x, pumpkin.center_y+100, arcade.color.WHITE, 50,bold=True)
-
             if pumpkin.is_shooting:
                 #print('shooting')
                 pumpkin.current_frame += 1
