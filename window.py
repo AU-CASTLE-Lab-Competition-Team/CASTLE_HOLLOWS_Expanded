@@ -356,6 +356,8 @@ class MyGameWindow(arcade.Window):
                 if self.game_over != True and hit_gate != True:
                     self.money +=1
                     self.score +=1
+                elif self.game_over != True and hit_gate == True:
+                    self.money+=1
 
         for pumpkin in self.spawned_pumpkins:
 
