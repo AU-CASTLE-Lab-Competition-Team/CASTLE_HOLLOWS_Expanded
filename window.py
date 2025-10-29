@@ -330,6 +330,10 @@ class MyGameWindow(arcade.Window):
         if self.game_over:
             self.game_over = True
             arcade.draw_text(f'GAME OVER', 600, 700, arcade.color.RED, 100, bold=True, align= 'center')
+        if self.spawned_pumpkins:
+            for pumpkin in self.spawned_pumpkins:
+                
+                arcade.draw_text(f'Level: {pumpkin.upgrade_level}', pumpkin.center_x-45, pumpkin.center_y+50, arcade.color.RED, 20,bold=True)
 
 
         self.seed_list.draw()
@@ -362,6 +366,9 @@ class MyGameWindow(arcade.Window):
                     self.score +=1
 
         for pumpkin in self.spawned_pumpkins:
+
+            arcade.draw_text('TESTSTSTSTSTSTSTSTSTST', pumpkin.center_x, pumpkin.center_y+100, arcade.color.WHITE, 50,bold=True)
+
             if pumpkin.is_shooting:
                 #print('shooting')
                 pumpkin.current_frame += 1
