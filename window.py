@@ -341,14 +341,16 @@ class MyGameWindow(arcade.Window):
                 self.show_wave_text = False
 
         for enemy in self.enemy_list:
+            hit_gate = False
             if arcade.check_for_collision(enemy,self.gate_door):
                 if self.gate.get_health() > 0:
                     self.gate.collision(1)
                     self.health_bar.pop()
+                    hit_gate = True
                 enemy.health -= 100
             if enemy.health <= 0:
                 enemy.remove_from_sprite_lists()
-                if self.game_over != True:
+                if self.game_over != True and hit_gate != True:
                     self.money +=1
                     self.score +=1
 
