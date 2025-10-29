@@ -8,7 +8,7 @@ from zombie import Zombie
 from vampire import Vampire
 from Frankenstein import Frankenstein
 from constants import SPRITE_SCALING_ENEMY, SPRITE_SCALING_ZOMBIE, SPRITE_SCALING_VAMPIRE, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
-from constants import PUMPKINS, PUMPKIN_NAMES
+from constants import PUMPKINS, PUMPKIN_NAMES, BASE_MONEY, WAVES
 
 from pumpkin import Pumpkin
 from gourd import Gourd
@@ -40,25 +40,8 @@ class MyGameWindow(arcade.Window):
         self.spawn_delay = 5.0
         self.enemies_to_spawn = 0
 
-        # new wave system
-        self.wave_list = [
-            {"enemy_type": "skeleton", "spawn_interval": 3.0, "count": 3},
-            {"enemy_type": "zombie",   "spawn_interval": 3.5, "count": 5},
-            {"enemy_type": "skeleton", "spawn_interval": 2.0, "count": 10},
-            {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 6},
-            {"enemy_type": "zombie",  "spawn_interval": 1.0, "count": 14},
-            {"enemy_type": "skeleton",  "spawn_interval": 1.5, "count": 20},
-            {"enemy_type": "vampire",  "spawn_interval": 2.0, "count": 10},
-            {"enemy_type": "vampire",  "spawn_interval": 1.5, "count": 20},
-            {"enemy_type": "skeleton",  "spawn_interval": 1.0, "count": 50},
-            {"enemy_type": "zombie",  "spawn_interval": .5, "count": 125},
-            {"enemy_type": "zombie",  "spawn_interval": .4, "count": 200},
-            {"enemy_type": "vampire",  "spawn_interval": 1.0, "count": 75},
-            {"enemy_type": "skeleton",  "spawn_interval": .25, "count": 200},
-            {"enemy_type": "vampire",  "spawn_interval": .5, "count": 100},
-            {"enemy_type": "zombie",  "spawn_interval": .15, "count": 300},
-
-        ]         
+        # wave system
+        self.wave_list = WAVES
         self.current_wave_index = -1
         self.wave_delay = 4.0
         self.wave_timer = 0.0
@@ -92,7 +75,7 @@ class MyGameWindow(arcade.Window):
         self.pumpkin_list = None
         self.selected_pumpkin = None
         self.patch_to_pumpkin = None
-        self.money = 10
+        self.money = BASE_MONEY
         self.score = 0
         self.game_over = False
         

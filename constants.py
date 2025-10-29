@@ -1,5 +1,25 @@
 # Central file for global game constants
 
+BASE_MONEY = 10
+
+WAVES = [
+            {"enemy_type": "skeleton", "spawn_interval": 3.0, "count": 3},
+            {"enemy_type": "zombie",   "spawn_interval": 3.5, "count": 5},
+            {"enemy_type": "skeleton", "spawn_interval": 2.0, "count": 10},
+            {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 6},
+            {"enemy_type": "zombie",  "spawn_interval": 1.0, "count": 14},
+            {"enemy_type": "skeleton",  "spawn_interval": 1.5, "count": 20},
+            {"enemy_type": "vampire",  "spawn_interval": 2.0, "count": 10},
+            {"enemy_type": "vampire",  "spawn_interval": 1.5, "count": 20},
+            {"enemy_type": "skeleton",  "spawn_interval": 1.0, "count": 50},
+            {"enemy_type": "zombie",  "spawn_interval": .5, "count": 125},
+            {"enemy_type": "zombie",  "spawn_interval": .4, "count": 200},
+            {"enemy_type": "vampire",  "spawn_interval": 1.0, "count": 75},
+            {"enemy_type": "skeleton",  "spawn_interval": .25, "count": 200},
+            {"enemy_type": "vampire",  "spawn_interval": .5, "count": 100},
+            {"enemy_type": "zombie",  "spawn_interval": .15, "count": 300},
+        ]        
+
 # Enemy (skeleton) settings
 SPRITE_SCALING_ENEMY = 0.15
 ENEMY_SPEED = 100
@@ -32,7 +52,7 @@ FIRE_RATE = 100
 
 #Gourd Stats
 G_SEED_DAMAGE = 100
-G_SEED_SPEED = 600
+G_SEED_SPEED = 1250
 G_PUMP_RANGE = 700
 G_FIRE_RATE = 275
 
