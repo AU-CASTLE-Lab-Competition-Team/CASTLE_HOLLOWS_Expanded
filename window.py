@@ -350,7 +350,7 @@ class MyGameWindow(arcade.Window):
                     self.gate.collision(1)
                     self.health_bar.pop()
                     hit_gate = True
-                enemy.health -= 100
+                enemy.health -= 250
             if enemy.health <= 0:
                 enemy.remove_from_sprite_lists()
                 if self.game_over != True and hit_gate != True:

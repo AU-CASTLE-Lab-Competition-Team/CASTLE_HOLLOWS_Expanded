@@ -9,13 +9,13 @@ WAVES = [
             {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 6},
             {"enemy_type": "zombie",  "spawn_interval": 1.0, "count": 14},
             {"enemy_type": "skeleton",  "spawn_interval": 1.5, "count": 20},
-            {"enemy_type": "vampire",  "spawn_interval": 2.0, "count": 10},
-            {"enemy_type": "vampire",  "spawn_interval": 1.5, "count": 20},
+            {"enemy_type": "vampire",  "spawn_interval": 1.5, "count": 10},
+            {"enemy_type": "vampire",  "spawn_interval": 1.0, "count": 20},
             {"enemy_type": "skeleton",  "spawn_interval": 1.0, "count": 50},
             {"enemy_type": "frank", "spawn_interval": 3.0, "count": 1},
             {"enemy_type": "zombie",  "spawn_interval": .5, "count": 125},
             {"enemy_type": "zombie",  "spawn_interval": .4, "count": 200},
-            {"enemy_type": "vampire",  "spawn_interval": 1.0, "count": 75},
+            {"enemy_type": "vampire",  "spawn_interval": .8, "count": 75},
             {"enemy_type": "skeleton",  "spawn_interval": .25, "count": 200},
             {"enemy_type": "vampire",  "spawn_interval": .5, "count": 100},
             {"enemy_type": "zombie",  "spawn_interval": .15, "count": 300},
@@ -31,7 +31,7 @@ ZOMBIE_SPEED = 125
 
 # Vampire settings
 SPRITE_SCALING_VAMPIRE = 0.10
-VAMPIRE_SPEED = 150
+VAMPIRE_SPEED = 200
 
 # Frankenstein
 FRANK_HEALTH = 5000
@@ -49,13 +49,13 @@ BACKGROUND_COLOR = (169, 189, 224)  # arcade.color.GRAY_BLUE equivalent
 SEED_DAMAGE = 35
 SEED_SPEED = 400
 PUMP_RANGE = 200
-FIRE_RATE = 100
+FIRE_RATE = 90
 
 #Gourd Stats
-G_SEED_DAMAGE = 100
+G_SEED_DAMAGE = 120
 G_SEED_SPEED = 1250
 G_PUMP_RANGE = 700
-G_FIRE_RATE = 275
+G_FIRE_RATE = 250
 
 #Baby Boo Stats
 B_SEED_DAMAGE = 15
