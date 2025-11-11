@@ -55,7 +55,6 @@ class MyGameWindow(arcade.Window):
         self.background_music = None
         self.pew = None
         
-
         self.ground_list = None
         self.patch_list = None
         self.path_list = None
@@ -79,7 +78,7 @@ class MyGameWindow(arcade.Window):
         self.money = BASE_MONEY
         self.score = 0
         self.game_over = False
-        
+        self.range_list = None
         self.shop_pumpkins_layer = None
         
         #self.setup()
@@ -116,6 +115,7 @@ class MyGameWindow(arcade.Window):
         self.shop_pumpkins_layer = self.map.sprite_lists["shop_pumpkins"]
         self.x_layer = self.map.sprite_lists["x"]
         self.pumpkin_list = arcade.SpriteList()
+        self.range_list = arcade.SpriteList()
 
         self.seed_list = arcade.SpriteList()
         self.health_bar_layer = self.map.sprite_lists["health_bar"]
@@ -321,8 +321,10 @@ class MyGameWindow(arcade.Window):
             self.game_over = True
             arcade.draw_text(f'GAME OVER', 600, 700, arcade.color.RED, 100, bold=True, align= 'center')
         if self.spawned_pumpkins:
+            if self.patch_full['patch'+str(self.curr_patch_num)] == 1:
+                selected_pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)][0]
+                arcade.draw_circle_outline(selected_pumpkin.center_x,selected_pumpkin.center_y,selected_pumpkin.range,arcade.color.RED)
             for pumpkin in self.spawned_pumpkins:
-                
                 arcade.draw_text(f'Level: {pumpkin.upgrade_level}', pumpkin.center_x-45, pumpkin.center_y+50, arcade.color.RED, 20,bold=True)
 
 

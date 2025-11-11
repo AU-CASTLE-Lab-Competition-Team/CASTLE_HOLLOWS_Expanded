@@ -45,7 +45,7 @@ class Seed(arcade.Sprite):
 
             if arcade.check_for_collision(self,self.target):
                 self.target.health -= self.pumpkin.damage
-                print(self.target.health)
+                #print(self.target.health)
                 self.pumpkin.seed = False
                 self.remove_from_sprite_lists()
 
