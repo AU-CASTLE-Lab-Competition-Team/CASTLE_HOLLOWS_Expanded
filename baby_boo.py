@@ -75,6 +75,6 @@ class Baby_Boo(arcade.Sprite):
             self.upgrade_level +=1
             self.range += 10
             self.damage += 10
-            self.fire_rate -= 15
+            self.fire_rate -= 10
             print('upgrade successful')
             return True
