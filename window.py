@@ -30,6 +30,7 @@ class MyGameWindow(arcade.Window):
         self.cam_center_y = 0
         self.zoom_scale = 1.0
 
+        self.frame_count = 0
 
         arcade.set_background_color(BACKGROUND_COLOR)
         self.camera = Camera2D()
@@ -59,7 +60,6 @@ class MyGameWindow(arcade.Window):
         self.patch_list = None
         self.path_list = None
         self.health_bar_layer = None
-        self.enemy_list = None
         self.selected_patch = None
         self.mode = None
         self.curr_patch_num = None
@@ -81,7 +81,12 @@ class MyGameWindow(arcade.Window):
         self.range_list = None
         self.shop_pumpkins_layer = None
         
-        #self.setup()
+        #Setup Text objects for better performance
+        self.wave_text = arcade.Text("", 1810, 970, arcade.color.WHITE, 20, bold=True)
+        self.money_text = arcade.Text("", 1810, 930, arcade.color.WHITE, 20, bold=True)
+        self.score_text = arcade.Text("", 1810, 890, arcade.color.WHITE, 20, bold=True)
+        self.fps_text = arcade.Text("", 550, 1000, arcade.color.WHITE, 20, bold=True)
+
     
     def play_pew(self):
         arcade.play_sound(self.pew, loop=False, volume=1)
@@ -117,7 +122,7 @@ class MyGameWindow(arcade.Window):
         self.pumpkin_list = arcade.SpriteList()
         self.range_list = arcade.SpriteList()
 
-        self.seed_list = arcade.SpriteList()
+        self.seed_list = arcade.SpriteList(use_spatial_hash=True)
         self.health_bar_layer = self.map.sprite_lists["health_bar"]
         self.patch_to_pumpkin = {}
         #Initializing Patches in dictionaries for easier access and control
@@ -165,7 +170,7 @@ class MyGameWindow(arcade.Window):
         self.mode = "Patches"
 
         # Enemy setup
-        self.enemy_list = arcade.SpriteList()
+        self.enemy_list = arcade.SpriteList(use_spatial_hash=True)
 
         self.position_list = [[0, 550], #changed to self/instance variable to reference in another function
                          [450, 550],
@@ -294,10 +299,12 @@ class MyGameWindow(arcade.Window):
         self.pumpkin_list.draw()
         self.shop_pumpkins_layer.draw()
         self.x_layer.draw()
-        
-        arcade.draw_text(f'Wave: {self.current_wave_index + 1}', 1810, 970, arcade.color.WHITE, 20,bold=True)        
-        arcade.draw_text(f'Money: ${self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
-        arcade.draw_text(f'Score: {self.score}', 1810, 890, arcade.color.WHITE, 20,bold=True)
+
+        #Draw the text objects
+        self.wave_text.draw()
+        self.money_text.draw()
+        self.score_text.draw()
+        self.fps_text.draw()
 
         arcade.draw_text(f'Selecting: {self.selected_pumpkin}', 1810, 150, arcade.color.WHITE, 16,bold=True)
         arcade.draw_text(f'Price: ${PUMPKINS[self.selected_pumpkin][0]}', 1810, 100, arcade.color.WHITE, 20,bold=True)
@@ -309,6 +316,8 @@ class MyGameWindow(arcade.Window):
         arcade.draw_text(f'Q: Toggle shop', 10, 120, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Space: Place vegetable', 10, 90, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Space: Upgrade vegetable (if on a full vegetable patch)', 10, 60, arcade.color.WHITE, 20,bold=True)
+        
+        arcade.draw_text(f'FPS: {arcade.get_fps():.2f}', 550, 1000, arcade.color.WHITE, 20, bold=True)
         
         if self.show_prepare_wave_text:
             arcade.draw_text(f'Enemies Coming Soon, Prepare...', 550, 900, arcade.color.RED, 40, bold=True)
@@ -334,9 +343,14 @@ class MyGameWindow(arcade.Window):
 
 
     def on_update(self, delta_time):
+        #Update text for screen
+        self.wave_text.text = f"Wave: {self.current_wave_index + 1}"
+        self.money_text.text = f"Money: ${self.money}"
+        self.score_text.text = f"Score: {self.score}"
+        self.fps_text.text = f"FPS: {arcade.get_fps():.2f}"
+        
         self.enemy_list.update(delta_time)
         self.seed_list.update()
-
         self.spawn_waves(delta_time)  
 
         # hide and show wave text
@@ -355,38 +369,38 @@ class MyGameWindow(arcade.Window):
                 enemy.health -= 250
             if enemy.health <= 0:
                 enemy.remove_from_sprite_lists()
-                if self.game_over != True and hit_gate != True:
+                if not self.game_over and not hit_gate:
                     self.money +=1
                     self.score +=1
-                elif self.game_over != True and hit_gate == True:
+                elif not self.game_over and hit_gate:
                     self.money+=1
+        if self.frame_count % 1 == 0:
+            for pumpkin in self.spawned_pumpkins:
+                if pumpkin.is_shooting:
+                    pumpkin.current_frame += 1
+                    if pumpkin.current_frame < len(pumpkin.animation):
+                        pumpkin.texture = pumpkin.animation[pumpkin.current_frame]
+                    else:
+                        pumpkin.is_shooting = False
+                        pumpkin.texture = pumpkin.idle_texture
 
-        for pumpkin in self.spawned_pumpkins:
+                if pumpkin.targeted_enemy and pumpkin.targeted_enemy.health <= 0:
+                    pumpkin.targeted_enemy = None
 
-            if pumpkin.is_shooting:
-                #print('shooting')
-                pumpkin.current_frame += 1
-                if pumpkin.current_frame < len(pumpkin.animation):
-                    pumpkin.texture = pumpkin.animation[pumpkin.current_frame]
+                if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
+                    self.play_pew()
+                    pumpkin.fire_animation()
+                    self.seed_list.append(Seed("assets/images/pumpseed.png", scale=2.5, pumpkin=pumpkin))
+                    pumpkin.cooldown = 0
                 else:
-                    pumpkin.is_shooting = False
-                    pumpkin.texture = pumpkin.idle_texture
+                    pumpkin.target(self.enemy_list)
 
-            if pumpkin.targeted_enemy and pumpkin.targeted_enemy.health <=0:
-                pumpkin.targeted_enemy = None
-
-            if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
-                self.play_pew()
-                pumpkin.fire_animation()
-                seed = Seed("assets/images/pumpseed.png",scale=2.5,pumpkin=pumpkin)
-                pumpkin.cooldown = 0
-                self.seed_list.append(seed)
-            else:
-                pumpkin.target(self.enemy_list)
-
-            if pumpkin.cooldown != pumpkin.fire_rate:
                 pumpkin.cooldown += 1
-                #print(pumpkin.cooldown)
+        self.frame_count += 1
+        if self.frame_count >= 100000:
+            self.frame_count = 0
+
+
 
             #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
             #Keep attacking until eliminated or leaves range
@@ -413,11 +427,8 @@ class MyGameWindow(arcade.Window):
         if key == arcade.key.ESCAPE:
             arcade.exit()
         if key == arcade.key.RIGHT:
-            print("right arrow key pressed")
             if self.mode == "Patches":
-                print('key press')
                 self.curr_patch_num += 1
-                print(self.curr_patch_num)
                 try:
                     self.selected_patch = arcade.SpriteList()
                     self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
@@ -426,9 +437,7 @@ class MyGameWindow(arcade.Window):
                     self.selected_patch = arcade.SpriteList()
                     self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
             elif self.mode == "Shop":
-                print('shop key press')
                 self.curr_shopitem_num += 1
-                print(self.curr_shopitem_num)
                 try:
                     self.selected_shopitem = arcade.SpriteList()
                     self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
@@ -440,11 +449,8 @@ class MyGameWindow(arcade.Window):
                     self.selected_pumpkin = self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][1]
                 
         elif key == arcade.key.LEFT:
-            print("left arrow key pressed")
             if self.mode == "Patches":
-                print('key press')
                 self.curr_patch_num -= 1
-                print(self.curr_patch_num)
                 try:
                     self.selected_patch = arcade.SpriteList()
                     self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
@@ -453,9 +459,7 @@ class MyGameWindow(arcade.Window):
                     self.selected_patch = arcade.SpriteList()
                     self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
             elif self.mode == "Shop":
-                print('shop key press')
                 self.curr_shopitem_num -= 1
-                print(self.curr_shopitem_num)
                 try:
                     self.selected_shopitem = arcade.SpriteList()
                     self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])

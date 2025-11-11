@@ -73,7 +73,7 @@ class Pumpkin(arcade.Sprite):
 
         if self.upgrade_level < 3:
             self.upgrade_level +=1
-            self.range += 10
+            self.range += 25
             self.damage += 10
             self.fire_rate -= 10
             print('upgrade successful')

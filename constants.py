@@ -45,7 +45,7 @@ SCREEN_TITLE = "CASTLE HALLOWS"
 # Colors, asset paths
 BACKGROUND_COLOR = (169, 189, 224)  # arcade.color.GRAY_BLUE equivalent
 
-# Seed/pumpkin stats
+#Jack stats
 SEED_DAMAGE = 35
 SEED_SPEED = 400
 PUMP_RANGE = 200
@@ -61,7 +61,7 @@ G_FIRE_RATE = 250
 B_SEED_DAMAGE = 15
 B_SEED_SPEED = 500
 B_PUMP_RANGE = 150
-B_FIRE_RATE = 55
+B_FIRE_RATE = 60
 
 #Coblets Stats
 C_SEED_DAMAGE = 1
