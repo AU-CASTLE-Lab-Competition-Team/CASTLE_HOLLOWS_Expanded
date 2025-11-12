@@ -196,6 +196,7 @@ class MyGameWindow(arcade.Window):
         elif enemy_type == "vampire":
             image = "assets/images/vampire_enemy.png"
             enemy = Vampire(image, SPRITE_SCALING_VAMPIRE, self.position_list)
+            enemy.enemy_list = self.enemy_list 
         elif enemy_type == "frank":
             image = "assets/images/frank.png"
             enemy = Frankenstein(image,1,self.position_list)
@@ -358,6 +359,7 @@ class MyGameWindow(arcade.Window):
                     hit_gate = True
                 enemy.health -= 250
             if enemy.health <= 0:
+                enemy.on_death()
                 enemy.remove_from_sprite_lists()
                 if not self.game_over and not hit_gate:
                     self.money +=1

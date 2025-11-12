@@ -10,3 +10,6 @@ class Frankenstein(Enemy):
 
         self.speed = FRANK_SPEED
         self.health = FRANK_HEALTH
+
+    def on_death(self):
+        return True

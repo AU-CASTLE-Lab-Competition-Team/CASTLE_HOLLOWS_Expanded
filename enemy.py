@@ -60,5 +60,5 @@ class Enemy(arcade.Sprite):
                 self.cur_position = 0
             '''
                 
-
-        
+    def on_death(self):
+        return True
