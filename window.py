@@ -10,10 +10,8 @@ from Frankenstein import Frankenstein
 from constants import SPRITE_SCALING_ENEMY, SPRITE_SCALING_ZOMBIE, SPRITE_SCALING_VAMPIRE, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 from constants import PUMPKINS, PUMPKIN_NAMES, BASE_MONEY, WAVES
 
-from pumpkin import Pumpkin
-from gourd import Gourd
-from coblets import Coblets
-from baby_boo import Baby_Boo
+from pumpkin_registry import PUMPKIN_REGISTRY
+
 from seed import Seed
 from gate import Gate
 
@@ -188,14 +186,6 @@ class MyGameWindow(arcade.Window):
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
         
 
-
-
-
-
-        
-        
-
-        
     def spawn_enemy(self, enemy_type):
         if enemy_type == "skeleton":
             image = "assets/images/skeleton_enemy.png"
@@ -309,7 +299,7 @@ class MyGameWindow(arcade.Window):
         arcade.draw_text(f'Selecting: {self.selected_pumpkin}', 1810, 150, arcade.color.WHITE, 16,bold=True)
         arcade.draw_text(f'Price: ${PUMPKINS[self.selected_pumpkin][0]}', 1810, 100, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Upgrade: ${PUMPKINS[self.selected_pumpkin][1]}', 1810, 75, arcade.color.WHITE, 20,bold=True)
-        arcade.draw_text(f'Damage: {PUMPKINS[self.selected_pumpkin][2]}', 1810, 50, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Damage: {PUMPKINS[self.selected_pumpkin][3]}', 1810, 50, arcade.color.WHITE, 20,bold=True)
         
         arcade.draw_text(f'Esc: Exit', 10, 30, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'L/R Arrow Keys: Switch through patches', 10, 150, arcade.color.WHITE, 20,bold=True)
@@ -492,14 +482,10 @@ class MyGameWindow(arcade.Window):
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
                     if self.money >= PUMPKINS[self.selected_pumpkin][0]:
-                        if self.selected_pumpkin == 'Jack':
-                            pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                        elif self.selected_pumpkin == 'Gourdon':
-                            pumpkin = Gourd("assets/images/gourd.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                        elif self.selected_pumpkin == 'Baby Boo':
-                            pumpkin = Baby_Boo("assets/images/baby_boo.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                        elif self.selected_pumpkin == 'Coblets':
-                            pumpkin = Coblets("assets/images/coblets.png",1,sel_patch_xy[0],sel_patch_xy[1])
+                        registry = PUMPKIN_REGISTRY[self.selected_pumpkin]
+                        pumpkin_class = registry["class"]
+                        pumpkin = pumpkin_class(registry["image"], registry["scale"], sel_patch_xy[0], sel_patch_xy[1])
+
                         self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = [pumpkin,self.selected_pumpkin]
                         self.pumpkin_list.append(pumpkin)
                         self.spawned_pumpkins.append(pumpkin)
