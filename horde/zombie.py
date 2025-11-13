@@ -1,5 +1,5 @@
 import arcade
-from enemy import Enemy
+from .enemy import Enemy
 from constants import ZOMBIE_SPEED
 from constants import ZOMBIE_MONEY
 

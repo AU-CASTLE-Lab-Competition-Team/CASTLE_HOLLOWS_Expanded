@@ -1,0 +1,3 @@
+- Make start window intergrated into main window
+- Set up main menu with start, levels option, exit, other modes, and loading screen
+- Leaderboard should be set up as input on the window not in terminal

@@ -1,5 +1,5 @@
 import arcade
-from enemy import Enemy
+from .enemy import Enemy
 from constants import FRANK_SPEED
 from constants import FRANK_HEALTH
 from constants import FRANK_MONEY

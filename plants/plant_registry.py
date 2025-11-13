@@ -1,9 +1,9 @@
-from pumpkin import Pumpkin
-from gourd import Gourd
-from coblets import Coblets
-from baby_boo import Baby_Boo
+from .pumpkin import Pumpkin
+from .gourd import Gourd
+from .coblets import Coblets
+from .baby_boo import Baby_Boo
 
-PUMPKIN_REGISTRY = {
+PLANT_REGISTRY = {
     "Jack": {
         "class": Pumpkin,
         "image": "assets/images/basic_pumpkin.png",

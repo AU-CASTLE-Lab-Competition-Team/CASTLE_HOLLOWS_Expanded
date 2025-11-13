@@ -3,16 +3,16 @@ from arcade.camera import Camera2D
 import arcade.gui as gui
 import time
 
-from enemy import Enemy
-from zombie import Zombie
-from vampire import Vampire
-from Frankenstein import Frankenstein
+from horde.enemy import Enemy
+from horde.zombie import Zombie
+from horde.vampire import Vampire
+from horde.Frankenstein import Frankenstein
 from constants import SPRITE_SCALING_ENEMY, SPRITE_SCALING_ZOMBIE, SPRITE_SCALING_VAMPIRE, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 from constants import PUMPKINS, PUMPKIN_NAMES, BASE_MONEY, WAVES
 
-from pumpkin_registry import PUMPKIN_REGISTRY
+from plants.plant_registry import PLANT_REGISTRY
 
-from seed import Seed
+from plants.seed import Seed
 from gate import Gate
 
 class MyGameWindow(arcade.Window):
@@ -473,7 +473,7 @@ class MyGameWindow(arcade.Window):
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
                     if self.money >= PUMPKINS[self.selected_pumpkin][0]:
-                        registry = PUMPKIN_REGISTRY[self.selected_pumpkin]
+                        registry = PLANT_REGISTRY[self.selected_pumpkin]
                         pumpkin_class = registry["class"]
                         pumpkin = pumpkin_class(registry["image"], registry["scale"], sel_patch_xy[0], sel_patch_xy[1])
 

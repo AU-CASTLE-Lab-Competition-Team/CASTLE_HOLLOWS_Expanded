@@ -1,5 +1,5 @@
 import arcade
-from enemy import Enemy
+from .enemy import Enemy
 from constants import BAT_SPEED, BAT_MONEY
 
 class Bat(Enemy):

@@ -1,7 +1,7 @@
 import arcade
 import random
-from enemy import Enemy
-from bat import Bat
+from .enemy import Enemy
+from .bat import Bat
 from constants import VAMPIRE_SPEED, BAT_COUNT
 from constants import VAMPIRE_MONEY
 
