@@ -18,7 +18,7 @@ from gate import Gate
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
         # super().__init__(width,height,title)
-        super().__init__(fullscreen=True)
+        super().__init__(fullscreen=True,update_rate=1/60)
         # self.set_location(400,200)
 
         self.manager = gui.UIManager()
@@ -93,7 +93,7 @@ class MyGameWindow(arcade.Window):
         self.map = arcade.load_tilemap("assets/maps/test_map2bigger.tmx",1)
 
         self.background_music = arcade.load_sound("assets/sound/music.mp3")
-        self.music_player = arcade.play_sound(self.background_music, loop=True,volume=.1)
+        #self.music_player = arcade.play_sound(self.background_music, loop=True,volume=.1)
         
         self.pew = arcade.load_sound("assets/sound/pew.mp3")
         map_width = self.map.width * self.map.tile_width
@@ -270,7 +270,7 @@ class MyGameWindow(arcade.Window):
 
 
     def on_draw(self):
-        self.clear()       
+        self.clear()    
         self.camera.position = (self.cam_center_x, self.cam_center_y)
         self.camera.zoom = self.zoom_scale
         self.camera.use()
@@ -300,7 +300,7 @@ class MyGameWindow(arcade.Window):
         arcade.draw_text(f'Selecting: {self.selected_pumpkin}', 1810, 150, arcade.color.WHITE, 16,bold=True)
         arcade.draw_text(f'Price: ${PUMPKINS[self.selected_pumpkin][0]}', 1810, 100, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Upgrade: ${PUMPKINS[self.selected_pumpkin][1]}', 1810, 75, arcade.color.WHITE, 20,bold=True)
-        arcade.draw_text(f'Damage: {PUMPKINS[self.selected_pumpkin][3]}', 1810, 50, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Damage: {PUMPKINS[self.selected_pumpkin][2]}', 1810, 50, arcade.color.WHITE, 20,bold=True)
         
         arcade.draw_text(f'Esc: Exit', 10, 30, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'L/R Arrow Keys: Switch through patches', 10, 150, arcade.color.WHITE, 20,bold=True)
@@ -338,7 +338,6 @@ class MyGameWindow(arcade.Window):
         self.wave_text.text = f"Wave: {self.current_wave_index + 1}"
         self.money_text.text = f"Money: ${self.money}"
         self.score_text.text = f"Score: {self.score}"
-        self.fps_text.text = f"FPS: {arcade.get_fps():.2f}"
         
         self.enemy_list.update(delta_time)
         self.seed_list.update()
@@ -362,45 +361,35 @@ class MyGameWindow(arcade.Window):
                 enemy.on_death()
                 enemy.remove_from_sprite_lists()
                 if not self.game_over and not hit_gate:
-                    self.money +=1
+                    self.money += enemy.money
                     self.score +=1
                 elif not self.game_over and hit_gate:
                     self.money+=1
-        if self.frame_count % 1 == 0:
-            for pumpkin in self.spawned_pumpkins:
-                if pumpkin.is_shooting:
-                    pumpkin.current_frame += 1
-                    if pumpkin.current_frame < len(pumpkin.animation):
-                        pumpkin.texture = pumpkin.animation[pumpkin.current_frame]
-                    else:
-                        pumpkin.is_shooting = False
-                        pumpkin.texture = pumpkin.idle_texture
 
-                if pumpkin.targeted_enemy and pumpkin.targeted_enemy.health <= 0:
-                    pumpkin.targeted_enemy = None
-
-                if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
-                    self.play_pew()
-                    pumpkin.fire_animation()
-                    self.seed_list.append(Seed("assets/images/pumpseed.png", scale=2.5, pumpkin=pumpkin))
-                    pumpkin.cooldown = 0
+        for pumpkin in self.spawned_pumpkins:
+            if pumpkin.is_shooting:
+                pumpkin.current_frame += 1
+                if pumpkin.current_frame < len(pumpkin.animation):
+                    pumpkin.texture = pumpkin.animation[pumpkin.current_frame]
                 else:
-                    pumpkin.target(self.enemy_list)
+                    pumpkin.is_shooting = False
+                    pumpkin.texture = pumpkin.idle_texture
 
-                pumpkin.cooldown += 1
-        self.frame_count += 1
-        if self.frame_count >= 100000:
-            self.frame_count = 0
+            if pumpkin.targeted_enemy and pumpkin.targeted_enemy.health <= 0:
+                pumpkin.targeted_enemy = None
 
+            if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
+                self.play_pew()
+                pumpkin.fire_animation()
+                self.seed_list.append(Seed("assets/images/pumpseed.png", scale=2.5, pumpkin=pumpkin))
+                pumpkin.cooldown = 0
+            else:
+                pumpkin.target(self.enemy_list)
 
-
-            #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
-            #Keep attacking until eliminated or leaves range
-
+            pumpkin.cooldown += 1
 
         if self.gate.health <= 0:
             self.game_over = True
-            # arcade.draw_text(f'GAME OVER', 1000, 700, arcade.color.RED, 72, bold=True, align= 'center')
             self.go_time += 1
             if self.go_time == 300:
                 self.close()

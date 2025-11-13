@@ -24,20 +24,25 @@ WAVES = [
 # Enemy (skeleton) settings
 SPRITE_SCALING_ENEMY = 0.15
 ENEMY_SPEED = 100
+ENEMY_MONEY = 1
 
 # Zombie settings
 SPRITE_SCALING_ZOMBIE = 0.06
 ZOMBIE_SPEED = 125
+ZOMBIE_MONEY = 1
 
 # Vampire settings
 SPRITE_SCALING_VAMPIRE = 0.10
 VAMPIRE_SPEED = 150
 BAT_SPEED = 200
 BAT_COUNT = 1 #How many bats on death
+VAMPIRE_MONEY = 1
+BAT_MONEY = 0
 
 # Frankenstein
 FRANK_HEALTH = 5000
 FRANK_SPEED = 85
+FRANK_MONEY = 10
 
 # Window settings
 SCREEN_WIDTH = 1080
@@ -50,7 +55,7 @@ BACKGROUND_COLOR = (169, 189, 224)  # arcade.color.GRAY_BLUE equivalent
 #Jack stats
 SEED_DAMAGE = 35
 SEED_SPEED = 800
-PUMP_RANGE = 200
+PUMP_RANGE = 250
 FIRE_RATE = 90
 
 #Gourd Stats
@@ -74,7 +79,7 @@ C_FIRE_RATE = 200
 #List of Pumpkin names to use for the shop
 #Order of Dictionary: Name: [Purchase Cost, Upgrade Cost]
 PUMPKIN_NAMES = ['Jack','Gourdon','Baby Boo','Coblets']
-PUMPKINS = {'Jack':[5,3,SEED_DAMAGE,SEED_SPEED,PUMP_RANGE,FIRE_RATE],
-            'Gourdon':[8,5,G_SEED_DAMAGE,G_SEED_SPEED,G_PUMP_RANGE,G_FIRE_RATE],
+PUMPKINS = {'Jack':[5,4,SEED_DAMAGE,SEED_SPEED,PUMP_RANGE,FIRE_RATE],
+            'Gourdon':[8,6,G_SEED_DAMAGE,G_SEED_SPEED,G_PUMP_RANGE,G_FIRE_RATE],
             'Baby Boo':[10,2,B_SEED_DAMAGE,B_SEED_SPEED,B_PUMP_RANGE,B_FIRE_RATE],
-            'Coblets':[1000000000000000000,2,C_SEED_DAMAGE,C_SEED_SPEED,C_PUMP_RANGE,C_FIRE_RATE]}
+            'Coblets':[1000000000000000000,20000000,C_SEED_DAMAGE,C_SEED_SPEED,C_PUMP_RANGE,C_FIRE_RATE]}

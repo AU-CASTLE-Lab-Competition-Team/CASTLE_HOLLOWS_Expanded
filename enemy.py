@@ -2,6 +2,7 @@ import arcade
 import math
 
 from constants import ENEMY_SPEED
+from constants import ENEMY_MONEY
 
 class Enemy(arcade.Sprite):
 
@@ -11,6 +12,7 @@ class Enemy(arcade.Sprite):
         self.cur_position = 0
         self.speed = ENEMY_SPEED
         self.health =health
+        self.money = ENEMY_MONEY
     
     def update(self, delta_time: float = 1/60):
         if self.health<=0:

@@ -3,6 +3,7 @@ import random
 from enemy import Enemy
 from bat import Bat
 from constants import VAMPIRE_SPEED, BAT_COUNT
+from constants import VAMPIRE_MONEY
 
 class Vampire(Enemy):
     def __init__(self, image, scale, position_list):
@@ -11,6 +12,7 @@ class Vampire(Enemy):
         self.speed = VAMPIRE_SPEED
         self.health = 150
         self.enemy_list = None
+        self.money = VAMPIRE_MONEY
         
     def on_death(self):
         image = "assets/images/bat.png"
